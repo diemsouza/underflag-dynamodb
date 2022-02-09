@@ -8,12 +8,12 @@ import config from './config.json';
 */
 
 const print = async (underflag: Underflag, key: string) => {
-    const data = await underflag.get(key);
+    const data = await underflag.getFeature(key);
     return {
         key,
         status: isOn(data) ? 'on' : 'off',
-        value: data && data.value,
-        origin: data && data.origin
+        value: data?.value,
+        origin: data?.origin
     };
 };
 
@@ -26,7 +26,7 @@ const print = async (underflag: Underflag, key: string) => {
     // use data privider
     const dataProvider = new DynamodbDataProvider({ client });
     const underflag = new Underflag({ dataProvider });
-    await underflag.getAll()
+    await underflag.getAllFeatures()
     // check flags
     const list: any[] = [];
     for (const key of config.features) {

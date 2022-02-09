@@ -37,7 +37,7 @@ describe('Data Provider', () => {
             const client = new DynamoDB({ region: "us-east-1" });
             const dataProvider = new DynamodbDataProvider({ client });
             const underflag = new Underflag({ dataProvider });
-            const res = await underflag.getAll();
+            const res = await underflag.getAllFeatures();
             expect(res).toBeInstanceOf(Array);
             expect(res.length).toEqual(2);
         });
