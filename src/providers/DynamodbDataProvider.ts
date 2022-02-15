@@ -1,4 +1,4 @@
-import { IDataProvider, Feature } from 'underflag';
+import { IDataProvider, BaseFeature } from 'underflag';
 import { DynamoDB, DynamoDBClient, GetItemCommand, ScanCommand, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb"
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
@@ -26,16 +26,16 @@ export class DynamodbDataProvider implements IDataProvider {
         this.tableName = options.tableName || DEFAULT_TABLE;
     }
 
-    async getAll(): Promise<Feature[]> {
+    async getAll(): Promise<BaseFeature[]> {
         const params = {
             TableName: this.tableName
         };
         const { Items, Count } = await this.client.send(new ScanCommand(params));
         if (!Items || !Count) return [];
-        return Items.map(a => unmarshall(a)) as Feature[];
+        return Items.map(a => unmarshall(a)) as BaseFeature[];
     }
 
-    async get(key: string): Promise<Feature | undefined> {
+    async get(key: string): Promise<BaseFeature | undefined> {
         const params = {
             TableName: this.tableName,
             Key: marshall({ key })
